@@ -1,0 +1,50 @@
+name: Phase 1 Training Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  learn-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Step 1 — Download my code
+        uses: actions/checkout@v3
+
+      - name: Step 2 — Who am I running as?
+        run: whoami
+
+      - name: Step 3 — What directory am I in?
+        run: pwd
+
+      - name: Step 4 — What files exist?
+        run: ls -la
+
+      - name: Step 5 — What tools do I have?
+        run: |
+          echo "=== Python ==="
+          python3 --version
+          echo "=== Node ==="
+          node --version
+          echo "=== Git ==="
+          git --version
+          echo "=== Curl ==="
+          curl --version | head -1
+
+      - name: Step 6 — Environment variables (safe view)
+        run: env | sort
+        # Look at the output — notice GITHUB_ variables everywhere
+
+      - name: Step 7 — Use a secret safely
+        run: echo "Secret exists and has length $(echo -n $MY_SECRET | wc -c) characters"
+        env:
+          MY_SECRET: ${{ secrets.MY_FIRST_SECRET }}
+        # We never print the secret — we only print its length
+
+      - name: Step 8 — What happens with network access?
+        run: curl -s https://ifconfig.me
+        # This prints the runner's public IP address
+        # Notice: it's an outbound connection to the internet
+        # Your SOC SIEM would see this
