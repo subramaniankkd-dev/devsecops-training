@@ -1,0 +1,34 @@
+name: My First Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download my code
+        uses: actions/checkout@v3
+
+      - name: Show what files exist
+        run: ls -la
+
+      - name: Show the machine info
+        run: uname -a
+
+      - name: Show environment variables
+        run: env | grep -v SECRET    # Notice: we filter out anything with SECRET
+
+      - name: Show current user
+        run: whoami                  # You'll see this runs as a non-root user
+
+      - name: Show what tools exist
+        run: |
+          echo "=== Node version ==="
+          node --version
+          echo "=== Python version ==="
+          python3 --version
+          echo "=== Docker check ==="
+          docker --version
